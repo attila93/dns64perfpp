@@ -79,7 +79,7 @@ struct DnsQuery {
  */
 class DnsTester {
 	private:
-		struct sockaddr_in6 server_; /**< Address of the server */
+		struct sockaddr_in server_; /**< Address of the server */
 		uint32_t ip_; /**< IP part of the subnet */
 		uint8_t netmask_; /**< Netmask part of the subnet */
 		uint32_t num_req_; /**< Number of requests */
@@ -108,7 +108,7 @@ class DnsTester {
 		 * @param num_burst size of burst
 		 * @param burst_delay delay between bursts in nanoseconds
 		 */
-		DnsTester(struct in6_addr server_addr, uint16_t port, uint32_t ip, uint8_t netmask, uint32_t num_req, uint32_t num_burst, std::chrono::nanoseconds burst_delay, struct timeval timeout);
+		DnsTester(struct in_addr server_addr, uint16_t port, uint32_t ip, uint8_t netmask, uint32_t num_req, uint32_t num_burst, std::chrono::nanoseconds burst_delay, struct timeval timeout);
 		
 		/**
 		 * Starts the test
