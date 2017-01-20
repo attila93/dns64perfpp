@@ -31,7 +31,7 @@
 
 
 int main(int argc, char* argv[]) {
-	struct in6_addr server_addr;
+	struct in_addr server_addr;
 	uint16_t port;
 	uint32_t ip;
 	uint8_t netmask;
@@ -43,10 +43,10 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 	/* Server address */
-	if (inet_pton(AF_INET6, argv[1], reinterpret_cast<void*>(&server_addr)) != 1) {
-		std::cerr << "Bad server adddress." << std::endl;
-		return -1;
-	}
+	//if (inet_pton(AF_INET6, argv[1], reinterpret_cast<void*>(&server_addr)) != 1) {
+	//	std::cerr << "Bad server adddress." << std::endl;
+	//	return -1;
+	//}
 	/* Port */
 	if (sscanf(argv[2], "%hu", &port) != 1) {
 		std::cerr << "Bad port." << std::endl;
