@@ -44,7 +44,7 @@ DnsQuery::DnsQuery(): received_{false},
 {
 }
 
-DnsTester::DnsTester(struct in6_addr server_addr, uint16_t port, uint32_t ip, uint8_t netmask, uint32_t num_req, uint32_t num_burst, std::chrono::nanoseconds burst_delay, struct timeval timeout):
+DnsTester::DnsTester(struct in_addr server_addr, uint16_t port, uint32_t ip, uint8_t netmask, uint32_t num_req, uint32_t num_burst, std::chrono::nanoseconds burst_delay, struct timeval timeout):
 					ip_{ip},
 					netmask_{netmask},
 					num_req_{num_req},
@@ -61,18 +61,18 @@ DnsTester::DnsTester(struct in6_addr server_addr, uint16_t port, uint32_t ip, ui
 	server_.sin6_port = htons(port);
 	/* Create socket */
 	int sockfd;
-	if ((sockfd = ::socket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP)) == -1) {
+	if ((sockfd = ::socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1) {
 		std::stringstream ss;
 		ss << "Cannot create socket: " << strerror(errno);
 		throw TestException{ss.str()};
 	}
 	sock_ = Socket{sockfd};
 	/* Bind socket */
-	struct sockaddr_in6 local_addr;
+	struct sockaddr_in local_addr;
 	memset(&local_addr, 0x00, sizeof(local_addr));
-	local_addr.sin6_family = AF_INET6;  // IPv6
-	local_addr.sin6_addr = in6addr_any; // To any valid IP address
-	local_addr.sin6_port = htons(0);   // Get a random port
+	local_addr.sin_family = AF_INET;  // IPv6
+	local_addr.sin_addr = htonl(INADDR_ANY); // To any valid IP address
+	local_addr.sin_port = htons(0);   // Get a random port
 	if (::bind(sock_, reinterpret_cast<struct sockaddr*>(&local_addr), sizeof(local_addr)) == -1) {
 		std::stringstream ss;
 		ss << "Unable to bind socket: " << strerror(errno);
@@ -161,7 +161,7 @@ void DnsTester::start() {
 	timer_ = std::unique_ptr<Timer>{new Timer{std::bind(&DnsTester::test, this), burst_delay_, (size_t) (num_req_ / num_burst_)}};
 	timer_->start();
 	/* Receiving answers */
-	struct sockaddr_in6 sender;
+	struct sockaddr_in sender;
 	socklen_t sender_len;
 	ssize_t recvlen;
 	uint8_t answer_data[UDP_MAX_LEN];
@@ -275,9 +275,9 @@ void DnsTester::display() {
 
 void DnsTester::write(const char* filename) {
 	FILE* fp;
-	char server[INET6_ADDRSTRLEN];
+	char server[INET_ADDRSTRLEN];
 	/* Convert server address to string */
-	if (inet_ntop(AF_INET6, reinterpret_cast<const void*>(&server_.sin6_addr), server, sizeof(server)) == NULL) {
+	if (inet_ntop(AF_INET, reinterpret_cast<const void*>(&server_.sin_addr), server, sizeof(server)) == NULL) {
 		std::stringstream ss;
 		ss << "Bad server address: " << strerror(errno);
 		throw TestException{ss.str()};
