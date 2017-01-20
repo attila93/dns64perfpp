@@ -71,7 +71,7 @@ DnsTester::DnsTester(struct in_addr server_addr, uint16_t port, uint32_t ip, uin
 	struct sockaddr_in local_addr;
 	memset(&local_addr, 0x00, sizeof(local_addr));
 	local_addr.sin_family = AF_INET;  // IPv6
-	local_addr.sin_addr = INADDR_ANY; // To any valid IP address
+	local_addr.sin_addr.s_addr = htonl (INADDR_ANY); // To any valid IP address
 	local_addr.sin_port = htons(0);   // Get a random port
 	if (::bind(sock_, reinterpret_cast<struct sockaddr*>(&local_addr), sizeof(local_addr)) == -1) {
 		std::stringstream ss;
@@ -289,7 +289,7 @@ void DnsTester::write(const char* filename) {
 	/* Write header */
 	fprintf(fp, "%s\n", "dns64perf++ test parameters");
 	fprintf(fp, "server: %s\n", server);
-	fprintf(fp, "port: %hu\n", ntohs(server_.sin6_port));
+	fprintf(fp, "port: %hu\n", ntohs(server_.sin_port));
 	fprintf(fp, "number of requests: %u\n", num_req_);
 	fprintf(fp, "burst size: %u\n", num_burst_);
 	fprintf(fp, "delay between bursts: %lu ns\n\n", burst_delay_.count());
