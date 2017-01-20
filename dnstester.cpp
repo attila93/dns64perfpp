@@ -56,9 +56,9 @@ DnsTester::DnsTester(struct in_addr server_addr, uint16_t port, uint32_t ip, uin
 	timeout_ = timeout;
 	/* Fill server sockaddr structure */
 	memset(&server_, 0x00, sizeof(server_));
-	server_.sin6_family = AF_INET6;
-	server_.sin6_addr = server_addr;
-	server_.sin6_port = htons(port);
+	server_.sin_family = AF_INET;
+	server_.sin_addr = server_addr;
+	server_.sin_port = htons(port);
 	/* Create socket */
 	int sockfd;
 	if ((sockfd = ::socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1) {
