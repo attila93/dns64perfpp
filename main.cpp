@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
 	if (inet_pton(AF_INET, argv[1], reinterpret_cast<void*>(&server_addr)) != 1) {
 		std::cerr << "Bad server adddress." << std::endl;
 		return -1;
-	//}
+	}
 	
 	/* Port */
 	if (sscanf(argv[2], "%hu", &port) != 1) {
