@@ -43,11 +43,11 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 	/* Server address */
-	//if (inet_pton(AF_INET6, argv[1], reinterpret_cast<void*>(&server_addr)) != 1) {
-	//	std::cerr << "Bad server adddress." << std::endl;
-	//	return -1;
+	if (inet_pton(AF_INET, argv[1], reinterpret_cast<void*>(&server_addr)) != 1) {
+		std::cerr << "Bad server adddress." << std::endl;
+		return -1;
 	//}
-	strcpy (server_addr, "10.10.10.1");
+	
 	/* Port */
 	if (sscanf(argv[2], "%hu", &port) != 1) {
 		std::cerr << "Bad port." << std::endl;
