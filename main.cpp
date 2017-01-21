@@ -47,6 +47,7 @@ int main(int argc, char* argv[]) {
 	//	std::cerr << "Bad server adddress." << std::endl;
 	//	return -1;
 	//}
+	strcpy (server_addr, "10.10.10.1");
 	/* Port */
 	if (sscanf(argv[2], "%hu", &port) != 1) {
 		std::cerr << "Bad port." << std::endl;
